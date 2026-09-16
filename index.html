@@ -69,8 +69,13 @@ section{padding:24px 16px 2px}
 .nightchip{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;color:var(--muted);background:var(--card);border:1px solid var(--line);border-radius:20px;padding:4px 10px 4px 7px}
 .nightchip i{width:8px;height:8px;border-radius:50%;flex:none}
 .cityhd{display:flex;align-items:baseline;gap:9px;margin-bottom:10px;flex-wrap:wrap}
-.cityhd b{font-family:var(--display);font-size:17px;font-weight:800}
+.cityhd b{font-family:var(--display);font-size:15px;font-weight:800}
 .cityhd span{font-size:12px;color:var(--muted)}
+.citycard{padding:12px 14px;margin-bottom:8px}
+.citycard .cityhd{margin-bottom:5px}
+.cityline{font-size:12.5px;line-height:1.95;color:var(--muted)}
+.cityline a{color:var(--ink);border-bottom:1px solid var(--line)}
+.cityline .sep{color:var(--line);margin:0 5px}
 .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
 .chipnav{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;padding:7px 12px;border-radius:20px;background:var(--blue-soft);color:var(--steel);border:1px solid #CBE2F0}
 html[data-theme="dark"] .chipnav{border-color:#25415A}
@@ -200,8 +205,7 @@ footer{padding:26px 18px 0;text-align:center;color:var(--muted);font-size:12px;l
 
 <section>
   <div class="sec-head"><span class="n">01</span><h2>行程总览</h2><span class="en">Map</span></div>
-  <div class="sec-note">三城分段，圆点按天配色，点一下直接导航。</div>
-  <div class="mapwrap" id="strip"></div>
+  <div class="sec-note">点地名直接导航。</div>
   <div id="maps"></div>
 </section>
 
@@ -325,73 +329,25 @@ function tick(){
 }
 renderNow();tick();setInterval(tick,1000);
 
-/* 三城路线条 + 三张城市地图 */
+/* 三城总览 */
 (function(){
-  var mk='<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1,1 L9,5 L1,9" fill="none" stroke="var(--steel)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>';
-  var st='<svg viewBox="0 0 680 118" role="img" aria-label="三城路线">'+mk;
-  st+='<line x1="112" y1="44" x2="298" y2="44" stroke="var(--steel)" stroke-width="1.6" marker-end="url(#ar)" opacity=".55"/>';
-  st+='<line x1="382" y1="44" x2="546" y2="44" stroke="var(--steel)" stroke-width="1.6" marker-end="url(#ar)" opacity=".55"/>';
-  st+='<text x="205" y="32" font-size="11" fill="var(--muted)" text-anchor="middle">2/7 · 09:25 → 12:15</text>';
-  st+='<text x="464" y="32" font-size="11" fill="var(--muted)" text-anchor="middle">2/10 · 12:40 → 14:45</text>';
-  [[95,"莫斯科","2/4 – 2/7 · 3 晚",C[0]],[340,"摩尔曼斯克","2/7 – 2/10 · 3 晚",C[3]],[560,"圣彼得堡","2/10 – 2/12 · 2 晚",C[6]]].forEach(function(n){
-    st+='<circle cx="'+n[0]+'" cy="44" r="9" fill="'+n[3]+'"/>';
-    st+='<text x="'+n[0]+'" y="74" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="middle">'+n[1]+"</text>";
-    st+='<text x="'+n[0]+'" y="92" font-size="11" fill="var(--muted)" text-anchor="middle">'+n[2]+"</text>";
-  });
-  st+="</svg>";
-  var nights=[[0,"2/4 莫斯科"],[1,"2/5 莫斯科"],[2,"2/6 莫斯科"],[3,"2/7 摩尔曼斯克"],[4,"2/8 摩尔曼斯克"],[5,"2/9 摩尔曼斯克"],[6,"2/10 圣彼得堡"],[7,"2/11 圣彼得堡"]];
-  var nc=nights.map(function(n){return '<span class="nightchip"><i style="background:'+C[n[0]]+'"></i>'+n[1]+"</span>";}).join("");
-  document.getElementById("strip").innerHTML=st+'<div class="nights">'+nc+'<span class="nightchip">共 8 晚</span></div>';
-
   var CITIES=[
-   {n:"莫斯科",s:"2/4 – 2/7 · 3 晚",far:{k:"kubinka",n:"库宾卡 · 武装力量主教座堂",t:"距市区约 65 公里"},
-    pts:[{k:"svo",n:"谢列梅捷沃机场",d:1},{k:"kremlin",n:"克里姆林宫",d:2},{k:"redsq",n:"红场 · 古姆",d:2},
-         {k:"coj",n:"基督救世主",d:2},{k:"tretyakov",n:"特列季亚科夫",d:2},{k:"arbat",n:"老阿尔巴特",d:2},{k:"vdnh",n:"VDNKh",d:3}]},
-   {n:"摩尔曼斯克",s:"2/7 – 2/10 · 3 晚",far:{k:"teriberka",n:"捷里别尔卡",t:"距市区约 140 公里"},
-    pts:[{k:"mmk",n:"摩尔曼斯克机场",d:4},{k:"murhouse",n:"湖畔木屋",d:4},{k:"alyosha",n:"阿廖沙（维修中）",d:6},
-         {k:"lenin",n:"列宁号破冰船",d:6},{k:"sami",n:"萨米民俗村",d:6}]},
-   {n:"圣彼得堡",s:"2/10 – 2/12 · 2 晚",far:null,
-    pts:[{k:"led",n:"普尔科夫机场",d:7},{k:"palacesq",n:"宫殿广场",d:7},{k:"hermitage",n:"冬宫",d:8},
-         {k:"blood",n:"滴血大教堂",d:8},{k:"kazan",n:"喀山大教堂",d:8},{k:"mariinsky",n:"马林斯基剧院",d:8},
-         {k:"isaac",n:"圣以撒",d:9},{k:"peterpaul",n:"彼得保罗要塞",d:9},{k:"aurora",n:"阿芙乐尔号",d:9}]}
+   {n:"莫斯科",s:"2/4 – 2/7 · 3 晚",
+    pts:[["谢列梅捷沃机场","svo"],["克里姆林宫","kremlin"],["红场 · 古姆","redsq"],["基督救世主","coj"],
+         ["特列季亚科夫","tretyakov"],["老阿尔巴特","arbat"],["VDNKh","vdnh"],["库宾卡 · 武装力量主教座堂","kubinka"]]},
+   {n:"摩尔曼斯克",s:"2/7 – 2/10 · 3 晚",
+    pts:[["摩尔曼斯克机场","mmk"],["湖畔木屋","murhouse"],["市区军事体验 · 打枪",null],["列宁号破冰船","lenin"],
+         ["阿廖沙（维修中）","alyosha"],["捷里别尔卡","teriberka"]]},
+   {n:"圣彼得堡",s:"2/10 – 2/12 · 2 晚",
+    pts:[["普尔科夫机场","led"],["宫殿广场","palacesq"],["冬宫","hermitage"],["滴血大教堂","blood"],
+         ["喀山大教堂","kazan"],["马林斯基剧院","mariinsky"],["圣以撒","isaac"],["彼得保罗要塞","peterpaul"],["阿芙乐尔号","aurora"]]}
   ];
-
-  function project(list,W,H){
-    var lo=Math.min.apply(null,list.map(function(p){return PL[p.k][0];}));
-    var hi=Math.max.apply(null,list.map(function(p){return PL[p.k][0];}));
-    var la=Math.min.apply(null,list.map(function(p){return PL[p.k][1];}));
-    var lb=Math.max.apply(null,list.map(function(p){return PL[p.k][1];}));
-    var dx=(hi-lo)||0.02, dy=(lb-la)||0.02;
-    lo-=dx*0.16;hi+=dx*0.16;la-=dy*0.16;lb+=dy*0.16;
-    return list.map(function(p){
-      return {n:p.n,d:p.d,k:p.k,
-        x:64+(PL[p.k][0]-lo)/(hi-lo)*(W-128),
-        y:(H-52)-(PL[p.k][1]-la)/(lb-la)*((H-52)-52)};
-    });
-  }
-
-  var W=680,H=300,out="";
-  CITIES.forEach(function(c,ci){
-    var pts=project(c.pts,W,H);
-    var svg='<svg viewBox="0 0 '+W+" "+H+'" role="img" aria-label="'+c.n+'地图">';
-    svg+='<defs><filter id="rg'+ci+'"><feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="2" seed="'+(ci*7+3)+'" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="4" xChannelSelector="R" yChannelSelector="G"/></filter></defs>';
-    svg+='<path d="M30,44 C150,18 420,26 650,60 C660,140 640,238 600,286 L40,282 C22,200 20,110 30,44 Z" fill="var(--blue-soft)" stroke="var(--line)" stroke-width="1" filter="url(#rg'+ci+')"/>';
-    svg+='<polyline points="'+pts.map(function(p){return p.x+","+p.y;}).join(" ")+'" fill="none" stroke="var(--steel)" stroke-width="1.6" stroke-dasharray="5 6" opacity=".45"/>';
-    pts.forEach(function(p,i){
-      svg+='<circle cx="'+p.x+'" cy="'+p.y+'" r="11" fill="'+C[p.d-1]+'"/>';
-      svg+='<text x="'+p.x+'" y="'+(p.y+4)+'" font-size="10.5" font-weight="700" fill="#fff" text-anchor="middle">'+(i+1)+"</text>";
-      var right=p.x<W*0.58;
-      svg+='<text x="'+(right?p.x+16:p.x-16)+'" y="'+(p.y+4)+'" font-size="11.5" fill="var(--ink)" text-anchor="'+(right?"start":"end")+'">'+p.n+"</text>";
-    });
-    svg+="</svg>";
-    var chips=pts.map(function(p,i){
-      return '<a class="chipnav" href="'+mapUrl(PL[p.k])+'" target="_blank" rel="noopener"><span class="no">'+(i+1)+"</span>"+p.n+"</a>";
-    }).join("");
-    if(c.far)chips+='<a class="chipnav all" href="'+mapUrl(PL[c.far.k])+'" target="_blank" rel="noopener">'+c.far.n+" · "+c.far.t+"</a>";
-    out+='<div class="card" style="margin-top:12px"><div class="cityhd"><b>'+c.n+'</b><span>'+c.s+"</span></div>"+
-      '<div class="mapwrap">'+svg+"</div>"+'<div class="chips">'+chips+"</div></div>";
-  });
-  document.getElementById("maps").innerHTML=out;
+  document.getElementById("maps").innerHTML=CITIES.map(function(c){
+    return '<div class="card citycard"><div class="cityhd"><b>'+c.n+"</b><span>"+c.s+"</span></div>"+
+      '<div class="cityline">'+c.pts.map(function(p){
+        return p[1]&&PL[p[1]]?'<a href="'+mapUrl(PL[p[1]])+'" target="_blank" rel="noopener">'+p[0]+"</a>":p[0];
+      }).join('<span class="sep">·</span>')+"</div></div>";
+  }).join("");
 })();
 
 /* flights */
@@ -499,12 +455,12 @@ var DAYS=[
   {t:"15:00",off:RU,h:"返程",p:"日落 16:50，务必天黑前上路"},
   {t:"19:00",off:RU,h:"回到木屋 · 休息",p:"一日游回来已经很晚",flag:["two","今晚不要再叠加极光团，极光窗口留给 2/7 和 2/9；冬季暴雪常封路，出发前必须查路况"]}
  ]},
-{d:6,dt:"02 / 09",wd:"周二",city:"缓冲日 + 第二次极光",night:"摩尔曼斯克木屋",
+{d:6,dt:"02 / 09",wd:"周二",city:"缓冲日 · 打枪 + 第二次极光",night:"摩尔曼斯克木屋",
  items:[
   {t:"上午",off:RU,h:"睡到自然醒 · 木屋做饭 · 休息",p:"这一天不要硬塞景点"},
-  {t:"14:00",off:RU,h:"采购海鲜",p:"帝王蟹、北极虾，摩尔曼斯克最有性价比的一餐"},
-  {t:"16:00",off:RU,h:"天气好：城市高处看全景",p:"不冻港和城区全景，日落约 16:50 前",k:"alyosha",flag:["two","阿廖沙雕像平台正在维修，上不去，只能远观——别专门为它跑一趟，改去附近高点或湖边"]},
-  {t:"16:00",off:RU,h:"天气差：萨米民俗村 / 列宁号破冰船 / 州立博物馆",p:"三选一当备选，别让缓冲日彻底空掉",k:"lenin",book:1},
+  {t:"13:00",off:RU,h:"市区军事体验 · 打枪",p:"摩尔曼斯克市内的射击体验店，室内项目，约 1.5–2 小时",book:1},
+  {t:"15:30",off:RU,h:"城市高处看全景",p:"不冻港和城区全景，赶在日落 16:50 之前",k:"alyosha",flag:["two","阿廖沙雕像平台正在维修，上不去，只能远观——别专门为它跑一趟，改去附近高点"]},
+  {t:"17:00",off:RU,h:"采购海鲜 · 回木屋做饭",p:"帝王蟹、北极虾，摩尔曼斯克最有性价比的一餐"},
   {t:"21:00",off:RU,h:"第二次追极光（推荐）",p:"极光最大变量是天气，三个晚上里有两个机会才稳妥",book:1,key:1}
  ]},
 {d:7,dt:"02 / 10",wd:"周三",city:"摩尔曼斯克 → 圣彼得堡",night:"圣彼得堡",
@@ -579,7 +535,8 @@ var TODOS=[
  ["","克里姆林宫门票，外加兵器库的分时段预约（想看兵器库必须单独订）"],
  ["","冬宫官网买电子票，走舒瓦洛夫通道免排队（2/11 上午场）"],
  ["","特列季亚科夫画廊、航天博物馆网上购票"],
- ["","备选项目预约：萨米民俗村、列宁号破冰船、摩尔曼斯克州立博物馆"],
+ ["","摩尔曼斯克市区射击体验店：出发前查好店名、营业时间和是否需要预约"],
+ ["","备选项目预约：列宁号破冰船、摩尔曼斯克州立博物馆"],
  ["","确认摩尔曼斯克私宅是否代办落地登记；不代办的话抵俄后 7 个工作日内自行去 МФЦ 或邮局办理"],
  ["","买覆盖俄罗斯全境的旅游保险（免签不强制，强烈建议）"],
  ["","换卢布现金，机场或景区不一定刷得成卡"],
