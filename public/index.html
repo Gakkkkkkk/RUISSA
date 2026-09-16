@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f6f4ee" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#14161a" media="(prefers-color-scheme: dark)">
+<meta name="description" content="2027 年 2 月俄罗斯 9 日 6 人行程手册">
+<title>俄罗斯 9 日 · 6 人行程手册</title>
+<style>
+:root{
+  --bg:#f6f4ee;--card:#fffdf8;--card2:#f2efe6;--ink:#1d1f22;--dim:#6b6f76;--faint:#9a9ea6;
+  --line:rgba(0,0,0,.13);--line2:rgba(0,0,0,.07);
+  --accent:#b4443c;--accentBg:#fbe9e7;--ok:#1f7a5c;--okBg:#e3f2ec;
+  --land:#efece1;--sea:#e7eef2;
+  --c1:#c2762c;--c2:#2f6fb5;--c3:#6a4fb0;--c4:#1f8a72;--c5:#b4443c;--c6:#8a6a2e;--c7:#3e8bb8;--c8:#9a5a9e;--c9:#4f8a4a;
+}
+html[data-theme="dark"]{
+  --bg:#14161a;--card:#1c1f24;--card2:#23272d;--ink:#e9e7e2;--dim:#9aa0a8;--faint:#767c85;
+  --line:rgba(255,255,255,.14);--line2:rgba(255,255,255,.07);
+  --accent:#e07a70;--accentBg:#2c201f;--ok:#5fbf98;--okBg:#1d2b26;
+  --land:#232830;--sea:#1a2129;
+  --c1:#e0a94e;--c2:#6fa8e8;--c3:#a98ae8;--c4:#45bf9e;--c5:#e07a70;--c6:#c2a05a;--c7:#6fb6de;--c8:#c08ac4;--c9:#7cc072;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg);color:var(--ink);
+  font:400 15px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:760px;margin:0 auto;padding:0 14px 80px}
+h1,h2,h3{margin:0;font-weight:600;letter-spacing:.01em}
+a{color:inherit}
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:16px 12px 18px 10px;padding:16px 16px 14px;margin:14px 0}
+.eyebrow{font-size:12px;letter-spacing:.14em;color:var(--faint);text-transform:uppercase;margin-bottom:8px}
+.sec{margin-top:26px}
+.sec>h2{font-size:19px;margin-bottom:2px}
+.sec>.sub{font-size:13px;color:var(--dim);margin-bottom:12px}
+
+/* now card */
+#now{background:var(--card);border:1.5px solid var(--line);border-radius:20px 14px 22px 12px;padding:18px 16px 16px;margin:16px 0 6px}
+#now .lab{font-size:12px;letter-spacing:.12em;color:var(--faint)}
+#now .ev{font-size:20px;font-weight:600;line-height:1.35;margin:6px 0 2px}
+#now .ev small{display:block;font-size:13px;font-weight:400;color:var(--dim);margin-top:3px}
+#cd{display:flex;gap:8px;margin:14px 0 4px}
+#cd .u{flex:1;background:var(--card2);border:1px solid var(--line2);border-radius:12px 9px 13px 8px;padding:10px 4px 8px;text-align:center}
+#cd .n{font-size:30px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums;color:var(--accent)}
+#cd .l{font-size:11px;color:var(--faint);margin-top:6px;letter-spacing:.08em}
+#now .tz{font-size:12.5px;color:var(--dim);margin-top:10px;line-height:1.7}
+#now .tz b{font-weight:600;color:var(--ink)}
+#now.done .n{color:var(--ok)}
+
+/* map */
+.mapbox{background:var(--card);border:1.5px solid var(--line);border-radius:16px 12px 18px 10px;padding:8px 6px 4px;overflow:hidden}
+.mapbox svg{display:block;width:100%;height:auto}
+.nights{display:flex;gap:5px;flex-wrap:wrap;padding:8px 10px 12px}
+.night{display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--dim);background:var(--card2);border:1px solid var(--line2);border-radius:999px;padding:4px 9px 4px 6px}
+.night i{width:9px;height:9px;border-radius:50%;display:block;flex:none}
+.night s{text-decoration:none;color:var(--faint)}
+
+/* orders */
+.ord{background:var(--card);border:1.5px solid var(--line);border-radius:16px 12px 18px 10px;padding:14px 15px;margin:12px 0}
+.ord .hd{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.ord .hd b{font-size:15px;font-weight:600}
+.tag{font-size:11px;padding:2px 8px;border-radius:999px;background:var(--card2);border:1px solid var(--line2);color:var(--dim)}
+.tag.ok{background:var(--okBg);border-color:transparent;color:var(--ok)}
+.tag.warn{background:var(--accentBg);border-color:transparent;color:var(--accent)}
+.ord dl{margin:0;display:grid;grid-template-columns:64px 1fr;gap:6px 10px;font-size:13.5px}
+.ord dt{color:var(--faint);font-size:12.5px;padding-top:1px}
+.ord dd{margin:0;word-break:break-word}
+.mask{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.06em}
+.seats{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}
+.seat{font-size:11.5px;background:var(--card2);border:1px solid var(--line2);border-radius:7px;padding:3px 7px;color:var(--dim)}
+
+/* days */
+.day{background:var(--card);border:1.5px solid var(--line);border-radius:16px 12px 18px 10px;margin:12px 0;overflow:hidden}
+.day>summary{list-style:none;cursor:pointer;padding:14px 15px;display:flex;align-items:center;gap:11px}
+.day>summary::-webkit-details-marker{display:none}
+.dot{width:26px;height:26px;flex:none;border-radius:9px 7px 10px 6px;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:600;color:#fff}
+.day .who{flex:1;min-width:0}
+.day .who b{display:block;font-size:15px;font-weight:600}
+.day .who span{font-size:12.5px;color:var(--dim)}
+.caret{color:var(--faint);font-size:12px;flex:none;transition:transform .18s}
+.day[open] .caret{transform:rotate(90deg)}
+.body{padding:0 15px 14px}
+.route{display:flex;align-items:center;gap:0;overflow-x:auto;padding:6px 0 10px;-webkit-overflow-scrolling:touch}
+.rs{display:flex;align-items:center;flex:none}
+.rs .pt{width:9px;height:9px;border-radius:50%;flex:none;border:2px solid var(--card)}
+.rs .lb{font-size:11.5px;color:var(--dim);margin:0 7px 0 4px;white-space:nowrap}
+.rs .ln{width:22px;height:1.5px;background:var(--line);flex:none}
+.navbtn{display:inline-flex;align-items:center;gap:6px;background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:8px 12px;font-size:13px;text-decoration:none;color:var(--ink);margin-bottom:12px}
+.tl{border-left:1.5px solid var(--line);margin-left:4px;padding-left:0}
+.ti{position:relative;padding:0 0 14px 16px}
+.ti:last-child{padding-bottom:2px}
+.ti:before{content:"";position:absolute;left:-5.5px;top:7px;width:9px;height:9px;border-radius:50%;background:var(--card);border:1.5px solid var(--faint)}
+.ti .t{font-size:12px;color:var(--faint);font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.ti .h{font-size:14.5px;font-weight:600;margin:1px 0 2px}
+.ti .p{font-size:13px;color:var(--dim);line-height:1.6}
+.ti .p a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line)}
+.book{display:inline-block;font-size:11px;color:var(--accent);background:var(--accentBg);border-radius:6px;padding:2px 7px;margin-top:5px}
+.warnln{display:inline-block;font-size:11.5px;color:var(--accent);margin-top:5px}
+.anchor{background:var(--card2);border-left:2.5px solid var(--accent);border-radius:0 8px 8px 0;margin:2px 0 10px;padding:8px 11px;font-size:13px}
+
+/* todos + tips */
+ul.plain{list-style:none;margin:0;padding:0}
+ul.plain li{position:relative;padding:9px 0 9px 22px;border-bottom:1px solid var(--line2);font-size:14px;line-height:1.6}
+ul.plain li:last-child{border-bottom:0}
+ul.plain li:before{content:"";position:absolute;left:3px;top:17px;width:6px;height:6px;border-radius:2px;background:var(--faint)}
+ul.plain li.hot:before{background:var(--accent)}
+ul.plain li em{font-style:normal;color:var(--dim);font-size:13px}
+.tips{display:grid;gap:10px}
+.tip{background:var(--card);border:1.5px solid var(--line);border-radius:14px 10px 16px 9px;padding:12px 14px;font-size:13.5px;line-height:1.7}
+.tip b{display:block;font-size:13.5px;margin-bottom:3px}
+.tip span{color:var(--dim)}
+footer{text-align:center;color:var(--faint);font-size:12px;margin-top:34px;line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div id="now"></div>
+<div class="mapbox" id="map"></div>
+
+<div class="sec">
+  <h2>已确认的订单</h2>
+  <div class="sub">时间均为当地时间。俄罗斯（莫斯科 / 摩尔曼斯克 / 圣彼得堡）UTC+3，比北京慢 5 小时。</div>
+  <div id="orders"></div>
+</div>
+
+<div class="sec">
+  <h2>逐日行程</h2>
+  <div class="sub">点标题展开当日路线，可一键打开全天多点导航。带标记的项目需要提前订票。</div>
+  <div id="days"></div>
+</div>
+
+<div class="sec">
+  <h2>待办清单</h2>
+  <div class="sub">办完一项告诉我，我来改这一页。</div>
+  <div class="card"><ul class="plain" id="todos"></ul></div>
+</div>
+
+<div class="sec">
+  <h2>实用贴士</h2>
+  <div class="sub">时差、电话、支付、保暖，出发前过一遍。</div>
+  <div class="tips" id="tips"></div>
+</div>
+
+<footer>
+  俄罗斯 9 日 · 6 人 · 2027.02.04 – 02.13<br>
+  页面所有时间都带时区，在任何地方打开都不会算错
+</footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+var pad=function(n){return n<10?"0"+n:""+n;};
+var epoch=function(iso){return Date.parse(iso);};
+var fmt=function(ms,off){var d=new Date(ms+off*60000);return (d.getUTCMonth()+1)+"/"+d.getUTCDate()+" "+pad(d.getUTCHours())+":"+pad(d.getUTCMinutes());};
+var hm=function(ms,off){var d=new Date(ms+off*60000);return pad(d.getUTCHours())+":"+pad(d.getUTCMinutes());};
+var RU=180, CN=480;
+
+var PL={
+ ngb:[121.4572,29.8267],pkx:[116.4107,39.5098],svo:[37.4146,55.9726],
+ mmk:[32.7508,68.7817],led:[30.2625,59.8003],pvg:[121.8050,31.1434],
+ kremlin:[37.6175,55.7520],redsq:[37.6208,55.7539],vasily:[37.6231,55.7525],
+ gum:[37.6212,55.7546],alex:[37.6130,55.7547],sparrow:[37.5430,55.7100],
+ coj:[37.6056,55.7446],tretyakov:[37.6206,55.7415],mayak:[37.5960,55.7702],
+ arbat:[37.5900,55.7500],
+ murhouse:[33.0827,68.9712],alyosha:[33.0736,68.9822],lenin:[33.0548,68.9708],
+ sami:[33.2000,68.9000],teriberka:[35.1458,69.1653],murmuseum:[33.0827,68.9712],
+ hermitage:[30.3146,59.9398],palacesq:[30.3132,59.9386],isaac:[30.3060,59.9341],
+ blood:[30.3287,59.9400],kazan:[30.3250,59.9341],nevsky:[30.3250,59.9350],
+ peterpaul:[30.3170,59.9500],mariinsky:[30.2956,59.9255]
+};
+var mapUrl=function(ll){return "https://yandex.ru/maps/?pt="+ll[0]+","+ll[1]+"&z=17&l=map";};
+var routeUrl=function(list){
+  if(!list.length)return "#";
+  return "https://yandex.ru/maps/?rtext="+list.map(function(p){return p[1]+","+p[0];}).join("~")+"&rtt=auto";
+};
+var A=function(txt,ll){return ll?'<a href="'+mapUrl(ll)+'" target="_blank" rel="noopener">'+txt+'</a>':txt;};
+
+var C=["--c1","--c2","--c3","--c4","--c5","--c6","--c7","--c8","--c9"];
+
+var ANCHORS=[
+ {iso:"2027-02-04T07:20:00+08:00",off:CN,off2:RU,t:"MU5177 起飞",p:"宁波栎社 T2"},
+ {iso:"2027-02-04T09:35:00+08:00",off:CN,off2:RU,t:"抵达北京大兴",p:"联程中转 2 小时 20 分"},
+ {iso:"2027-02-04T11:55:00+08:00",off:CN,off2:RU,t:"MU2075 起飞",p:"北京大兴 → 莫斯科"},
+ {iso:"2027-02-04T15:30:00+03:00",off:RU,off2:CN,t:"抵达莫斯科",p:"谢列梅捷沃 C 航站楼"},
+ {iso:"2027-02-07T09:25:00+03:00",off:RU,off2:CN,t:"飞摩尔曼斯克",p:"莫斯科 → 摩尔曼斯克"},
+ {iso:"2027-02-07T12:15:00+03:00",off:RU,off2:CN,t:"抵达摩尔曼斯克",p:"开启北极圈段"},
+ {iso:"2027-02-10T12:40:00+03:00",off:RU,off2:CN,t:"飞圣彼得堡",p:"摩尔曼斯克 → 圣彼得堡"},
+ {iso:"2027-02-10T14:45:00+03:00",off:RU,off2:CN,t:"抵达圣彼得堡",p:"普尔科夫机场"},
+ {iso:"2027-02-12T21:05:00+03:00",off:RU,off2:CN,t:"MU260 起飞",p:"圣彼得堡 → 上海浦东"},
+ {iso:"2027-02-13T11:50:00+08:00",off:CN,off2:RU,t:"抵达上海浦东 T1",p:"行程结束"}
+];
+ANCHORS.forEach(function(a){a.ms=epoch(a.iso);});
+
+var DAYS=[
+{d:1,dt:"2/4",wd:"周四",city:"宁波 → 北京 → 莫斯科",night:"莫斯科",
+ items:[
+  {t:"05:20",off:CN,h:"宁波栎社国际机场 T2 集合",p:"国际航班建议提前 2 小时；联程票，行李可直挂莫斯科",k:"ngb"},
+  {t:"07:20",off:CN,h:"MU5177 起飞",p:"宁波 07:20 → 北京大兴 09:35，飞行 2 小时 15 分。座位 49A 安康 / 49B 泓皓 / 49C 贝宁 / 49J 娅妮 / 49K 荣 / 49L 茜",k:"ngb",anchor:1},
+  {t:"09:35",off:CN,h:"抵达北京大兴",p:"中转 2 小时 20 分。同一联程订单、行李直挂，不用重新托运，直接走国际转机通道",k:"pkx"},
+  {t:"11:55",off:CN,h:"MU2075 起飞",p:"北京大兴 11:55 → 莫斯科 15:30，飞行 8 小时 35 分。座位 39A 安康 / 38A 贝宁 / 38C 娅妮 / 39C 泓皓 / 40A 茜 / 40C 荣",k:"pkx",anchor:1},
+  {t:"15:30",off:RU,h:"抵达莫斯科谢列梅捷沃 C",p:"出关加取行李约 1–1.5 小时",k:"svo",anchor:1},
+  {t:"17:30",off:RU,h:"前往市区",p:"Aeroexpress 到白俄罗斯站约 35 分钟，打车 40–70 分钟（晚高峰更久）",k:"svo"},
+  {t:"19:00",off:RU,h:"入住 + 晚餐",p:"莫斯科酒店待订。落地当天不排任何景点"}
+ ]},
+{d:2,dt:"2/5",wd:"周五",city:"莫斯科 · 除夕",night:"莫斯科",
+ items:[
+  {t:"09:30",off:RU,h:"酒店出发",p:"地铁或打车前往红场一线"},
+  {t:"10:00",off:RU,h:"克里姆林宫 + 兵器库",p:"10:00–17:00，周四闭馆。建议官网提前买票，现场队伍长",k:"kremlin",book:1},
+  {t:"13:00",off:RU,h:"午餐",p:"红场周边，避开景区正门口那几家"},
+  {t:"14:00",off:RU,h:"红场 · 圣瓦西里主教座堂 · 古姆百货",p:"古姆的冰激凌和超市值得进，暖气也足",k:"redsq"},
+  {t:"16:30",off:RU,h:"亚历山大花园 · 无名烈士墓",p:"整点换岗；圣诞新年集市通常开到一月",k:"alex"},
+  {t:"19:00",off:RU,h:"除夕晚餐",p:"建议提前订位，2 月 5 日是除夕"}
+ ]},
+{d:3,dt:"2/6",wd:"周六",city:"莫斯科 · 正月初一",night:"莫斯科",
+ items:[
+  {t:"09:30",off:RU,h:"麻雀山观景台 · 莫斯科大学",p:"看莫斯科城全景，风大戴好帽子",k:"sparrow"},
+  {t:"11:00",off:RU,h:"基督救世主大教堂",p:"免费开放，步行可达",k:"coj"},
+  {t:"12:30",off:RU,h:"午餐"},
+  {t:"14:00",off:RU,h:"特列季亚科夫画廊",p:"周一闭馆。俄罗斯绘画主线，建议提前网上购票",k:"tretyakov",book:1},
+  {t:"17:00",off:RU,h:"莫斯科地铁巡游",p:"马雅可夫斯基站、革命广场站、基辅站壁画最值得看",k:"mayak"},
+  {t:"19:00",off:RU,h:"阿尔巴特街晚餐",p:"正月初一，街上人多",k:"arbat"}
+ ]},
+{d:4,dt:"2/7",wd:"周日",city:"莫斯科 → 摩尔曼斯克",night:"摩尔曼斯克",
+ items:[
+  {t:"06:30",off:RU,h:"出发前往谢列梅捷沃",p:"早高峰前走，留足国内航班 2 小时"},
+  {t:"09:25",off:RU,h:"起飞 · 莫斯科 → 摩尔曼斯克",p:"约 2 小时 50 分，12:15 落地。出票前请核对真实航班号与时刻",anchor:1},
+  {t:"12:30",off:RU,h:"市区午餐 + 超市采买",p:"补给热水、零食、暖宝宝；北极圈段夜里很冷"},
+  {t:"14:00",off:RU,h:"入住 Uyutny na Beregu Ozera",p:"ulitsa Lomonosova 24A · 六人村舍湖景 · 电话 +7 911 322-09-66",k:"murhouse"},
+  {t:"16:00",off:RU,h:"阿廖沙雕像",p:"日落约 16:50 前上去，看城市和不冻港全景",k:"alyosha"},
+  {t:"21:00",off:RU,h:"极光观测 · 第一晚",p:"先看云图再出门，选北面开阔、无路灯的地方",warn:"白昼只有 7 小时（约 09:40–16:50），白天行程别排太满"}
+ ]},
+{d:5,dt:"2/8",wd:"周一",city:"摩尔曼斯克 · 捷里别尔卡",night:"摩尔曼斯克",
+ items:[
+  {t:"08:30",off:RU,h:"出发前往捷里别尔卡",p:"单程约 140 公里，冬季车程 2–2.5 小时",k:"teriberka",warn:"冬季暴雪常封路，出发前必须查路况；不建议自驾"},
+  {t:"11:00",off:RU,h:"捷里别尔卡",p:"北极圈标志、船舶墓地、冰瀑布、北冰洋岸线",k:"teriberka"},
+  {t:"15:00",off:RU,h:"返程",p:"日落 16:50，务必天黑前离开"},
+  {t:"18:00",off:RU,h:"回摩尔曼斯克晚餐"},
+  {t:"21:00",off:RU,h:"极光观测 · 第二晚"}
+ ]},
+{d:6,dt:"2/9",wd:"周二",city:"摩尔曼斯克",night:"摩尔曼斯克",
+ items:[
+  {t:"10:00",off:RU,h:"列宁号核动力破冰船",p:"世界第一艘核动力破冰船，停靠在港口",k:"lenin",book:1},
+  {t:"12:30",off:RU,h:"午餐"},
+  {t:"14:00",off:RU,h:"摩尔曼斯克州地方志博物馆",p:"极光成因和北极开发史，适合白天时段",k:"murmuseum"},
+  {t:"16:00",off:RU,h:"萨米民俗村",p:"驯鹿雪橇、萨米人文化体验，通常需要预约",k:"sami",book:1},
+  {t:"21:00",off:RU,h:"极光观测 · 第三晚",p:"三个晚上里选云最少的一晚重点拍"}
+ ]},
+{d:7,dt:"2/10",wd:"周三",city:"摩尔曼斯克 → 圣彼得堡",night:"圣彼得堡",
+ items:[
+  {t:"09:30",off:RU,h:"退房",p:"最晚 12:00，但 12:40 的航班建议提前退"},
+  {t:"10:00",off:RU,h:"出发前往摩尔曼斯克机场",p:"距市区约 35 公里，冬季路滑，车程 45–60 分钟"},
+  {t:"12:40",off:RU,h:"起飞 · 摩尔曼斯克 → 圣彼得堡",p:"约 2 小时 5 分，14:45 落地。出票前请核对真实航班号与时刻",anchor:1},
+  {t:"15:30",off:RU,h:"入住圣彼得堡酒店",p:"待订"},
+  {t:"17:00",off:RU,h:"滴血大教堂",p:"周三开放。内部马赛克是重点",k:"blood"},
+  {t:"19:00",off:RU,h:"涅瓦大街 · 喀山大教堂",p:"晚餐安排在涅瓦大街一带",k:"nevsky",warn:"圣以撒大教堂和彼得保罗要塞都是周三闭馆，今天去不了"}
+ ]},
+{d:8,dt:"2/11",wd:"周四",city:"圣彼得堡",night:"圣彼得堡",
+ items:[
+  {t:"10:30",off:RU,h:"冬宫（埃尔米塔什）",p:"11:00–18:00，16:00 停止入场。务必官网买电子票走舒瓦洛夫通道免排队，逛 4–5 小时",k:"hermitage",book:1,warn:"迟到超过预约时间 30 分钟可能被取消入场"},
+  {t:"14:30",off:RU,h:"午餐",p:"别在冬宫广场周边吃，走 5–10 分钟到大马厩街"},
+  {t:"15:30",off:RU,h:"冬宫广场 · 亚历山大柱",p:"出门就是",k:"palacesq"},
+  {t:"16:30",off:RU,h:"圣以撒大教堂登顶",p:"周四开放，周三闭馆。柱廊俯瞰全城",k:"isaac"},
+  {t:"19:00",off:RU,h:"晚餐"},
+  {t:"20:00",off:RU,h:"可选：马林斯基剧院芭蕾",p:"旺季好位子提前数周就没了",k:"mariinsky",book:1}
+ ]},
+{d:9,dt:"2/12",wd:"周五",city:"圣彼得堡 → 上海",night:"—",
+ items:[
+  {t:"09:30",off:RU,h:"彼得保罗要塞",p:"周四开放，周三闭馆。冬季有冰雕节",k:"peterpaul"},
+  {t:"12:00",off:RU,h:"午餐 + 回酒店取行李"},
+  {t:"16:30",off:RU,h:"出发前往普尔科夫机场 T1",p:"市区到机场 40–60 分钟",k:"led"},
+  {t:"18:00",off:RU,h:"抵达机场",p:"国际航班建议提前 3 小时",k:"led"},
+  {t:"21:05",off:RU,h:"MU260 起飞",p:"圣彼得堡 21:05 → 上海浦东 11:50（次日），飞行 9 小时 45 分。座位 47A 贝宁 / 47C 娅妮 / 47D 泓皓 / 47H 安康 / 47J 荣 / 47L 茜",anchor:1},
+  {t:"11:50",off:CN,h:"2/13 抵达上海浦东 T1",p:"上海之后各自买动车分开走",nt:"2027-02-13"}
+ ]}
+];
+
+var ORDERS=[
+ {tag:"机票 · 已出票",state:"ok",name:"MU5177　宁波 → 北京大兴",rows:[
+   ["日期","2027 年 2 月 4 日 周四"],["起飞","07:20　宁波栎社国际机场 T2（北京时间 UTC+8）"],
+   ["落地","09:35　北京大兴国际机场"],["时长","2 小时 15 分"],
+   ["座位","49A 安康 · 49B 泓皓 · 49C 贝宁 · 49J 娅妮 · 49K 荣 · 49L 茜"]]},
+ {tag:"机票 · 已出票",state:"ok",name:"MU2075　北京大兴 → 莫斯科",rows:[
+   ["日期","2027 年 2 月 4 日 周四"],["起飞","11:55　北京大兴国际机场（北京时间 UTC+8）"],
+   ["落地","15:30　莫斯科谢列梅捷沃国际机场 C 航站楼（UTC+3）"],["时长","8 小时 35 分"],
+   ["中转","大兴 2 小时 20 分，联程票、行李直挂莫斯科"],
+   ["座位","39A 安康 · 38A 贝宁 · 38C 娅妮 · 39C 泓皓 · 40A 茜 · 40C 荣"]]},
+ {tag:"机票 · 已出票",state:"ok",name:"MU260　圣彼得堡 → 上海",rows:[
+   ["日期","2027 年 2 月 12 日 周五"],["起飞","21:05　圣彼得堡普尔科夫机场 T1（UTC+3）"],
+   ["落地","2027 年 2 月 13 日 11:50　上海浦东国际机场 T1（北京时间 UTC+8）"],["时长","9 小时 45 分"],
+   ["座位","47A 贝宁 · 47C 娅妮 · 47D 泓皓 · 47H 安康 · 47J 荣 · 47L 茜"]]},
+ {tag:"俄国内段 · 待出票",state:"warn",name:"莫斯科 → 摩尔曼斯克",rows:[
+   ["日期","2027 年 2 月 7 日 周日"],["时刻","09:25 → 12:15（UTC+3），约 2 小时 50 分"],
+   ["机场","莫斯科谢列梅捷沃 SVO → 摩尔曼斯克 MMK"],
+   ["注意","时刻为初步方案，出票前请核对真实航班号；北极圈段旺季座位紧张"]]},
+ {tag:"俄国内段 · 待出票",state:"warn",name:"摩尔曼斯克 → 圣彼得堡",rows:[
+   ["日期","2027 年 2 月 10 日 周三"],["时刻","12:40 → 14:45（UTC+3），约 2 小时 5 分"],
+   ["机场","摩尔曼斯克 MMK → 圣彼得堡普尔科夫 LED"],
+   ["注意","民宿 12:00 前必须退房，10:00 就要出发去机场"]]},
+ {tag:"住宿 · 已订",state:"ok",name:"Uyutny na Beregu Ozera Private House",rows:[
+   ["城市","摩尔曼斯克"],["地址","ulitsa Lomonosova, 24A, Murmansk"],
+   ["入住","2027 年 2 月 7 日 14:00 之后"],["退房","2027 年 2 月 10 日 12:00 之前"],
+   ["房型","六人村舍湖景：4 张单人床 + 1 张双人床 + 沙发床"],
+   ["电话","+7 911 322-09-66"],
+   ["编号","<span class='mask'>尾号 5434</span>　完整编号见订房 App"],
+   ["提醒","私宅不是酒店，需确认房东是否代办落地登记"]],
+   link:PL.murhouse},
+ {tag:"住宿 · 待订",state:"warn",name:"莫斯科 · 3 晚（2/4 – 2/7）",rows:[
+   ["需求","6 人，建议订市中心环线内，靠近地铁"],["状态","未订"]]},
+ {tag:"住宿 · 待订",state:"warn",name:"圣彼得堡 · 2 晚（2/10 – 2/12）",rows:[
+   ["需求","6 人，建议订涅瓦大街 / 冬宫一带"],["状态","未订"]]}
+];
+
+var TODOS=[
+ ["hot","订莫斯科酒店 3 晚（2/4 – 2/7，6 人，市中心环线内）"],
+ ["hot","订圣彼得堡酒店 2 晚（2/10 – 2/12，6 人，涅瓦大街一带）"],
+ ["hot","核对并出票：莫斯科 → 摩尔曼斯克 09:25–12:15（2/7）"],
+ ["hot","核对并出票：摩尔曼斯克 → 圣彼得堡 12:40–14:45（2/10）"],
+ ["hot","出发前确认中俄免签与「Госуслуги RuID」数字注册要求，提前生成入境二维码"],
+ ["","确认摩尔曼斯克私宅是否代办落地登记；不代办的话抵俄后 7 个工作日内自行去 МФЦ 或邮局办理"],
+ ["","网上预约克里姆林宫门票（2/5）"],
+ ["","官网买冬宫电子票，走免排队通道（2/11）"],
+ ["","列宁号破冰船确认开放日与场次"],
+ ["","萨米民俗村预约"],
+ ["","马林斯基剧院芭蕾演出票（如果要看，尽早）"],
+ ["","买覆盖俄罗斯全境的旅游保险（免签不强制，强烈建议）"],
+ ["","换卢布现金，机场或景区不一定刷得成卡"],
+ ["","手机装好 Yango Maps 与 2GIS，下载莫斯科 / 摩尔曼斯克 / 圣彼得堡离线地图"],
+ ["","冬季装备：羽绒服、保暖内衣、雪地靴、手套帽子、暖宝宝"],
+ ["","相机与手机备用电池（低温掉电极快），备防寒套"],
+ ["","护照拍照备份 + 打印一份纸质件，与现金分开放"]
+];
+
+var TIPS=[
+ ["时差","莫斯科、摩尔曼斯克、圣彼得堡都是 UTC+3，比北京时间慢 5 小时。页面里所有时间都标了时区，在哪打开都不会算错。"],
+ ["免签","中国公民持普通护照可免签入境俄罗斯，单次最长停留 30 天，政策有效期已延至 2027 年 12 月 31 日，本次 9 天完全够用。以免签入境需提前完成官方数字注册生成二维码，出发前请再确认一次最新要求。"],
+ ["落地登记","住酒店由酒店代办。住私宅或公寓的，须在抵达后 7 个工作日内自行到当地 МФЦ 或邮局办理居留登记，逾期会被罚款。摩尔曼斯克那间是私宅，务必跟房东确认。"],
+ ["电话","报警 102　急救 103　火警 101　中国驻俄使馆领事保护 +7-499-951-8661　外交部全球领事保护热线 12308。"],
+ ["支付","备足卢布现金，另带些人民币应急。银联、微信、支付宝只在大型商场和部分机场商家能用，小城镇基本是现金。"],
+ ["网络","微信文字和语音消息能正常用，WhatsApp、Telegram 的语音视频在俄受限。建议买当地 SIM 卡（МТС、Мегафон、Билайн），需出示护照。"],
+ ["冬宫","厚外套和大于 35×40×30 厘米的包必须寄存，冬天寄衣要排队，多留 10 分钟。展厅禁止闪光灯、三脚架和自拍杆。广场上装扮成沙皇的人合影后要高价小费，别搭理。"],
+ ["极光","捷里别尔卡冬季常因暴雪封路，出发前查路况，不建议自驾。看极光先看云图，选北面开阔无路灯处；-15°C 站一小时是常态，暖宝宝贴手机背面能防关机。"],
+ ["摩尔曼斯克 2 月","日出约 09:40，日落约 16:50，白昼约 7 小时；白天 -8°C 上下，夜间 -15°C。极光季是 9 月到次年 4 月，2 月夜够长，属于好月份。"],
+ ["圣彼得堡","市中心停车限制严格，冬宫周边基本没有游客停车位，别开车去。夏宫（彼得霍夫）冬季喷泉关闭、只开公园，往返要半天，这次时间不够，留到下次。"]
+];
+
+/* ---- theme ---- */
+function theme(){
+  var sys=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;
+  var h=new Date().getHours();
+  var night=(h>=19||h<7);
+  document.documentElement.setAttribute("data-theme",(sys||night)?"dark":"light");
+}
+theme();setInterval(theme,60000);
+
+/* ---- now card ---- */
+var nowEl=document.getElementById("now");
+function nextAnchor(){
+  var now=Date.now();
+  for(var i=0;i<ANCHORS.length;i++){if(ANCHORS[i].ms>now)return ANCHORS[i];}
+  return null;
+}
+function renderNow(){
+  var a=nextAnchor();
+  if(!a){
+    nowEl.className="done";
+    nowEl.innerHTML='<div class="lab">此刻关注</div><div class="ev">行程已结束<small>2027 年 2 月 13 日 11:50 抵达上海浦东 T1</small></div>';
+    return;
+  }
+  nowEl.className="";
+  nowEl.innerHTML=
+   '<div class="lab">此刻关注 · 下一个行程事件</div>'+
+   '<div class="ev">'+a.t+'<small>'+a.p+'</small></div>'+
+   '<div id="cd">'+
+     '<div class="u"><div class="n" id="dd">--</div><div class="l">天</div></div>'+
+     '<div class="u"><div class="n" id="hh">--</div><div class="l">时</div></div>'+
+     '<div class="u"><div class="n" id="mm">--</div><div class="l">分</div></div>'+
+     '<div class="u"><div class="n" id="ss">--</div><div class="l">秒</div></div>'+
+   '</div>'+
+   '<div class="tz">'+
+     "<b>当地时间</b> "+fmt(a.ms,a.off)+"　（UTC"+(a.off>=0?"+":"")+(a.off/60)+"）<br>"+
+     "<b>北京时间</b> "+fmt(a.ms,CN)+"　（UTC+8）"+
+   '</div>';
+}
+function tick(){
+  var a=nextAnchor();
+  if(!a){renderNow();return;}
+  var box=document.getElementById("dd");
+  if(!box){renderNow();return;}
+  var s=Math.floor((a.ms-Date.now())/1000);
+  if(s<0)s=0;
+  document.getElementById("dd").textContent=Math.floor(s/86400);
+  document.getElementById("hh").textContent=pad(Math.floor(s%86400/3600));
+  document.getElementById("mm").textContent=pad(Math.floor(s%3600/60));
+  document.getElementById("ss").textContent=pad(s%60);
+}
+renderNow();tick();setInterval(tick,1000);
+
+/* ---- overview map ---- */
+(function(){
+  var nodes=[
+    {x:150,y:70,n:"摩尔曼斯克",sub:"2/7 – 2/10 · 3 晚"},
+    {x:108,y:168,n:"圣彼得堡",sub:"2/10 – 2/12 · 2 晚"},
+    {x:252,y:232,n:"莫斯科",sub:"2/4 – 2/7 · 3 晚"},
+    {x:455,y:266,n:"北京",sub:"中转"},
+    {x:616,y:342,n:"宁波 · 上海",sub:"出发 / 返回"}
+  ];
+  var legs=[
+    {d:1,c:"var(--c1)",p:"M616,342 Q540,300 455,266"},
+    {d:1,c:"var(--c1)",p:"M455,266 Q360,226 252,232"},
+    {d:4,c:"var(--c4)",p:"M252,232 Q168,150 150,70"},
+    {d:7,c:"var(--c7)",p:"M150,70 Q112,116 108,168"},
+    {d:9,c:"var(--c9)",p:"M108,168 Q360,60 616,342"}
+  ];
+  var s='<svg viewBox="0 0 680 400" role="img" aria-label="行程总览路线图">';
+  s+='<defs><filter id="rgh"><feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves="2" seed="9" result="n"/>'+
+      '<feDisplacementMap in="SourceGraphic" in2="n" scale="3.2" xChannelSelector="R" yChannelSelector="G"/></filter></defs>';
+  s+='<path d="M20,120 C90,58 210,38 330,70 C455,104 585,180 668,262 L668,392 L20,392 Z" fill="var(--land)" stroke="var(--line)" stroke-width="1" filter="url(#rgh)"/>';
+  s+='<path d="M20,96 L668,150" stroke="var(--line)" stroke-width="1" stroke-dasharray="5 6" fill="none"/>';
+  s+='<text x="24" y="90" font-size="10.5" fill="var(--faint)">北极圈 66°33′</text>';
+  legs.forEach(function(l){
+    s+='<path d="'+l.p+'" fill="none" stroke="'+l.c+'" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="1 0" filter="url(#rgh)" opacity="0.95"/>';
+  });
+  nodes.forEach(function(n){
+    s+='<circle cx="'+n.x+'" cy="'+n.y+'" r="7" fill="var(--card)" stroke="var(--ink)" stroke-width="1.8"/>';
+    var right=n.x>560;
+    s+='<text x="'+(right?n.x-14:n.x+14)+'" y="'+(n.y+3)+'" font-size="13" font-weight="600" fill="var(--ink)" text-anchor="'+(right?"end":"start")+'">'+n.n+'</text>';
+    s+='<text x="'+(right?n.x-14:n.x+14)+'" y="'+(n.y+19)+'" font-size="10.5" fill="var(--dim)" text-anchor="'+(right?"end":"start")+'">'+n.sub+'</text>';
+  });
+  s+='</svg>';
+  var nightsHtml=[
+    {d:1,c:"var(--c1)",t:"2/4 莫斯科"},{d:2,c:"var(--c2)",t:"2/5 莫斯科"},{d:3,c:"var(--c3)",t:"2/6 莫斯科"},
+    {d:4,c:"var(--c4)",t:"2/7 摩尔曼斯克"},{d:5,c:"var(--c5)",t:"2/8 摩尔曼斯克"},{d:6,c:"var(--c6)",t:"2/9 摩尔曼斯克"},
+    {d:7,c:"var(--c7)",t:"2/10 圣彼得堡"},{d:8,c:"var(--c8)",t:"2/11 圣彼得堡"}
+  ].map(function(n){return '<span class="night"><i style="background:'+n.c+'"></i>'+n.t+'</span>';}).join("");
+  document.getElementById("map").innerHTML=s+'<div class="nights">'+nightsHtml+'<span class="night"><s>共 8 晚</s></span></div>';
+})();
+
+/* ---- orders ---- */
+document.getElementById("orders").innerHTML=ORDERS.map(function(o){
+  var rows=o.rows.map(function(r){return "<dt>"+r[0]+"</dt><dd>"+r[1]+"</dd>";}).join("");
+  return '<div class="ord"><div class="hd"><b>'+o.name+'</b><span class="tag '+o.state+'">'+o.tag+"</span>"+
+    (o.link?' <a class="navbtn" style="margin:0;padding:3px 9px;font-size:12px" href="'+mapUrl(o.link)+'" target="_blank" rel="noopener">地图</a>':'')+
+    '</div><dl>'+rows+"</dl></div>";
+}).join("");
+
+/* ---- days ---- */
+document.getElementById("days").innerHTML=DAYS.map(function(day,i){
+  var col="var("+C[i]+")";
+  var stops=day.items.filter(function(it){return it.k&&PL[it.k];}).map(function(it){return PL[it.k];});
+  var seen={},uniq=[];
+  stops.forEach(function(p){var k=p.join(",");if(!seen[k]){seen[k]=1;uniq.push(p);}});
+  var route=day.items.filter(function(it){return it.k&&PL[it.k];}).map(function(it,idx){
+    var p=PL[it.k];var k=p.join(",");
+    if(seen["r"+k])return "";seen["r"+k]=1;
+    return '<div class="rs"><span class="pt" style="background:'+col+'"></span><span class="lb">'+it.h.replace(/（.*?）/g,"")+"</span>"+(idx<day.items.length-1?'<span class="ln"></span>':"")+"</div>";
+  }).join("");
+  var body=day.items.map(function(it){
+    var time=it.nt?it.nt.replace("2027-","")+" "+it.t:it.t;
+    var p=it.p||"";
+    if(it.k&&PL[it.k]&&p)p=A(p,PL[it.k]);
+    return '<div class="ti">'+
+      '<div class="t">'+time+"　UTC"+(it.off>=0?"+":"")+(it.off/60)+"</div>"+
+      '<div class="h">'+it.h+"</div>"+
+      (p?'<div class="p">'+p+"</div>":"")+
+      (it.book?'<div class="book">需提前订票 / 预约</div>':"")+
+      (it.warn?'<div class="warnln">'+it.warn+"</div>":"")+
+    "</div>";
+  }).join("");
+  return '<details class="day"'+(i===0?" open":"")+'>'+
+    '<summary><span class="dot" style="background:'+col+'">D'+day.d+"</span>"+
+    '<span class="who"><b>'+day.dt+" "+day.wd+"　"+day.city+"</b><span>住 "+day.night+"</span></span>"+
+    '<span class="caret">▸</span></summary>'+
+    '<div class="body">'+
+      '<div class="route">'+route+"</div>"+
+      (uniq.length?'<a class="navbtn" href="'+routeUrl(uniq)+'" target="_blank" rel="noopener">打开全天多点导航（'+(uniq.length)+" 站）</a>":"")+
+      '<div class="tl">'+body+"</div>"+
+    "</div></details>";
+}).join("");
+
+/* ---- todos ---- */
+document.getElementById("todos").innerHTML=TODOS.map(function(t){
+  return '<li'+(t[0]==="hot"?' class="hot"':"")+">"+t[1]+"</li>";
+}).join("");
+
+/* ---- tips ---- */
+document.getElementById("tips").innerHTML=TIPS.map(function(t){
+  return '<div class="tip"><b>'+t[0]+"</b><span>"+t[1]+"</span></div>";
+}).join("");
+})();
+</script>
+</body>
+</html>
