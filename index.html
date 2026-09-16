@@ -68,6 +68,9 @@ section{padding:24px 16px 2px}
 .nights{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
 .nightchip{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;color:var(--muted);background:var(--card);border:1px solid var(--line);border-radius:20px;padding:4px 10px 4px 7px}
 .nightchip i{width:8px;height:8px;border-radius:50%;flex:none}
+.cityhd{display:flex;align-items:baseline;gap:9px;margin-bottom:10px;flex-wrap:wrap}
+.cityhd b{font-family:var(--display);font-size:17px;font-weight:800}
+.cityhd span{font-size:12px;color:var(--muted)}
 .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
 .chipnav{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;padding:7px 12px;border-radius:20px;background:var(--blue-soft);color:var(--steel);border:1px solid #CBE2F0}
 html[data-theme="dark"] .chipnav{border-color:#25415A}
@@ -197,8 +200,9 @@ footer{padding:26px 18px 0;text-align:center;color:var(--muted);font-size:12px;l
 
 <section>
   <div class="sec-head"><span class="n">01</span><h2>行程总览</h2><span class="en">Map</span></div>
-  <div class="sec-note">按天配色，圆点是每晚住哪。</div>
-  <div class="mapwrap" id="map"></div>
+  <div class="sec-note">三城分段，圆点按天配色，点一下直接导航。</div>
+  <div class="mapwrap" id="strip"></div>
+  <div id="maps"></div>
 </section>
 
 <section>
@@ -321,38 +325,73 @@ function tick(){
 }
 renderNow();tick();setInterval(tick,1000);
 
-/* overview map */
+/* 三城路线条 + 三张城市地图 */
 (function(){
-  var nodes=[
-   {x:150,y:70,n:"摩尔曼斯克",s:"2/7 – 2/10 · 3 晚"},
-   {x:108,y:168,n:"圣彼得堡",s:"2/10 – 2/12 · 2 晚"},
-   {x:252,y:232,n:"莫斯科",s:"2/4 – 2/7 · 3 晚"},
-   {x:455,y:266,n:"北京",s:"中转"},
-   {x:616,y:342,n:"宁波 · 上海",s:"出发 / 返回"}
-  ];
-  var legs=[
-   {c:C[0],p:"M616,342 Q540,300 455,266"},
-   {c:C[0],p:"M455,266 Q360,226 252,232"},
-   {c:C[3],p:"M252,232 Q168,150 150,70"},
-   {c:C[6],p:"M150,70 Q112,116 108,168"},
-   {c:C[8],p:"M108,168 Q360,60 616,342"}
-  ];
-  var s='<svg viewBox="0 0 680 400" role="img" aria-label="行程总览路线图">';
-  s+='<defs><filter id="rgh"><feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves="2" seed="9" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="3.2" xChannelSelector="R" yChannelSelector="G"/></filter></defs>';
-  s+='<path d="M20,120 C90,58 210,38 330,70 C455,104 585,180 668,262 L668,392 L20,392 Z" fill="var(--blue-soft)" stroke="var(--line)" stroke-width="1" filter="url(#rgh)"/>';
-  s+='<path d="M20,96 L668,150" stroke="var(--muted)" stroke-width="1" stroke-dasharray="5 6" fill="none" opacity=".5"/>';
-  s+='<text x="24" y="90" font-size="10.5" fill="var(--muted)">北极圈 66°33′</text>';
-  legs.forEach(function(l){s+='<path d="'+l.p+'" fill="none" stroke="'+l.c+'" stroke-width="2.4" stroke-linecap="round" filter="url(#rgh)"/>';});
-  nodes.forEach(function(n){
-    s+='<circle cx="'+n.x+'" cy="'+n.y+'" r="7" fill="var(--card)" stroke="var(--steel)" stroke-width="1.8"/>';
-    var r=n.x>560;
-    s+='<text x="'+(r?n.x-14:n.x+14)+'" y="'+(n.y+3)+'" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="'+(r?"end":"start")+'">'+n.n+"</text>";
-    s+='<text x="'+(r?n.x-14:n.x+14)+'" y="'+(n.y+19)+'" font-size="10.5" fill="var(--muted)" text-anchor="'+(r?"end":"start")+'">'+n.s+"</text>";
+  var mk='<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1,1 L9,5 L1,9" fill="none" stroke="var(--steel)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>';
+  var st='<svg viewBox="0 0 680 118" role="img" aria-label="三城路线">'+mk;
+  st+='<line x1="112" y1="44" x2="298" y2="44" stroke="var(--steel)" stroke-width="1.6" marker-end="url(#ar)" opacity=".55"/>';
+  st+='<line x1="382" y1="44" x2="546" y2="44" stroke="var(--steel)" stroke-width="1.6" marker-end="url(#ar)" opacity=".55"/>';
+  st+='<text x="205" y="32" font-size="11" fill="var(--muted)" text-anchor="middle">2/7 · 09:25 → 12:15</text>';
+  st+='<text x="464" y="32" font-size="11" fill="var(--muted)" text-anchor="middle">2/10 · 12:40 → 14:45</text>';
+  [[95,"莫斯科","2/4 – 2/7 · 3 晚",C[0]],[340,"摩尔曼斯克","2/7 – 2/10 · 3 晚",C[3]],[560,"圣彼得堡","2/10 – 2/12 · 2 晚",C[6]]].forEach(function(n){
+    st+='<circle cx="'+n[0]+'" cy="44" r="9" fill="'+n[3]+'"/>';
+    st+='<text x="'+n[0]+'" y="74" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="middle">'+n[1]+"</text>";
+    st+='<text x="'+n[0]+'" y="92" font-size="11" fill="var(--muted)" text-anchor="middle">'+n[2]+"</text>";
   });
-  s+="</svg>";
+  st+="</svg>";
   var nights=[[0,"2/4 莫斯科"],[1,"2/5 莫斯科"],[2,"2/6 莫斯科"],[3,"2/7 摩尔曼斯克"],[4,"2/8 摩尔曼斯克"],[5,"2/9 摩尔曼斯克"],[6,"2/10 圣彼得堡"],[7,"2/11 圣彼得堡"]];
   var nc=nights.map(function(n){return '<span class="nightchip"><i style="background:'+C[n[0]]+'"></i>'+n[1]+"</span>";}).join("");
-  document.getElementById("map").innerHTML=s+'<div class="nights">'+nc+'<span class="nightchip">共 8 晚</span></div>';
+  document.getElementById("strip").innerHTML=st+'<div class="nights">'+nc+'<span class="nightchip">共 8 晚</span></div>';
+
+  var CITIES=[
+   {n:"莫斯科",s:"2/4 – 2/7 · 3 晚",far:{k:"kubinka",n:"库宾卡 · 武装力量主教座堂",t:"距市区约 65 公里"},
+    pts:[{k:"svo",n:"谢列梅捷沃机场",d:1},{k:"kremlin",n:"克里姆林宫",d:2},{k:"redsq",n:"红场 · 古姆",d:2},
+         {k:"coj",n:"基督救世主",d:2},{k:"tretyakov",n:"特列季亚科夫",d:2},{k:"arbat",n:"老阿尔巴特",d:2},{k:"vdnh",n:"VDNKh",d:3}]},
+   {n:"摩尔曼斯克",s:"2/7 – 2/10 · 3 晚",far:{k:"teriberka",n:"捷里别尔卡",t:"距市区约 140 公里"},
+    pts:[{k:"mmk",n:"摩尔曼斯克机场",d:4},{k:"murhouse",n:"湖畔木屋",d:4},{k:"alyosha",n:"阿廖沙（维修中）",d:6},
+         {k:"lenin",n:"列宁号破冰船",d:6},{k:"sami",n:"萨米民俗村",d:6}]},
+   {n:"圣彼得堡",s:"2/10 – 2/12 · 2 晚",far:null,
+    pts:[{k:"led",n:"普尔科夫机场",d:7},{k:"palacesq",n:"宫殿广场",d:7},{k:"hermitage",n:"冬宫",d:8},
+         {k:"blood",n:"滴血大教堂",d:8},{k:"kazan",n:"喀山大教堂",d:8},{k:"mariinsky",n:"马林斯基剧院",d:8},
+         {k:"isaac",n:"圣以撒",d:9},{k:"peterpaul",n:"彼得保罗要塞",d:9},{k:"aurora",n:"阿芙乐尔号",d:9}]}
+  ];
+
+  function project(list,W,H){
+    var lo=Math.min.apply(null,list.map(function(p){return PL[p.k][0];}));
+    var hi=Math.max.apply(null,list.map(function(p){return PL[p.k][0];}));
+    var la=Math.min.apply(null,list.map(function(p){return PL[p.k][1];}));
+    var lb=Math.max.apply(null,list.map(function(p){return PL[p.k][1];}));
+    var dx=(hi-lo)||0.02, dy=(lb-la)||0.02;
+    lo-=dx*0.16;hi+=dx*0.16;la-=dy*0.16;lb+=dy*0.16;
+    return list.map(function(p){
+      return {n:p.n,d:p.d,k:p.k,
+        x:64+(PL[p.k][0]-lo)/(hi-lo)*(W-128),
+        y:(H-52)-(PL[p.k][1]-la)/(lb-la)*((H-52)-52)};
+    });
+  }
+
+  var W=680,H=300,out="";
+  CITIES.forEach(function(c,ci){
+    var pts=project(c.pts,W,H);
+    var svg='<svg viewBox="0 0 '+W+" "+H+'" role="img" aria-label="'+c.n+'地图">';
+    svg+='<defs><filter id="rg'+ci+'"><feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="2" seed="'+(ci*7+3)+'" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="4" xChannelSelector="R" yChannelSelector="G"/></filter></defs>';
+    svg+='<path d="M30,44 C150,18 420,26 650,60 C660,140 640,238 600,286 L40,282 C22,200 20,110 30,44 Z" fill="var(--blue-soft)" stroke="var(--line)" stroke-width="1" filter="url(#rg'+ci+')"/>';
+    svg+='<polyline points="'+pts.map(function(p){return p.x+","+p.y;}).join(" ")+'" fill="none" stroke="var(--steel)" stroke-width="1.6" stroke-dasharray="5 6" opacity=".45"/>';
+    pts.forEach(function(p,i){
+      svg+='<circle cx="'+p.x+'" cy="'+p.y+'" r="11" fill="'+C[p.d-1]+'"/>';
+      svg+='<text x="'+p.x+'" y="'+(p.y+4)+'" font-size="10.5" font-weight="700" fill="#fff" text-anchor="middle">'+(i+1)+"</text>";
+      var right=p.x<W*0.58;
+      svg+='<text x="'+(right?p.x+16:p.x-16)+'" y="'+(p.y+4)+'" font-size="11.5" fill="var(--ink)" text-anchor="'+(right?"start":"end")+'">'+p.n+"</text>";
+    });
+    svg+="</svg>";
+    var chips=pts.map(function(p,i){
+      return '<a class="chipnav" href="'+mapUrl(PL[p.k])+'" target="_blank" rel="noopener"><span class="no">'+(i+1)+"</span>"+p.n+"</a>";
+    }).join("");
+    if(c.far)chips+='<a class="chipnav all" href="'+mapUrl(PL[c.far.k])+'" target="_blank" rel="noopener">'+c.far.n+" · "+c.far.t+"</a>";
+    out+='<div class="card" style="margin-top:12px"><div class="cityhd"><b>'+c.n+'</b><span>'+c.s+"</span></div>"+
+      '<div class="mapwrap">'+svg+"</div>"+'<div class="chips">'+chips+"</div></div>";
+  });
+  document.getElementById("maps").innerHTML=out;
 })();
 
 /* flights */
@@ -360,11 +399,11 @@ var FLIGHTS=[
  {no:"MU5177 · 第一段",al:"中国东方航空 · 2/4 周四",
   a:{code:"NGB",apt:"宁波栎社 T2",time:"07:20",dt:"2/4 周四 · UTC+8"},
   b:{code:"PKX",apt:"北京大兴",time:"09:35",dt:"2/4 周四 · UTC+8"},dur:"2h15m",
-  kv:[["座位","49A 安康 · 49B 泓皓 · 49C 贝宁 · 49J 娅妮 · 49K 荣 · 49L 茜"]]},
+  kv:[["座位","49A 高 · 49B 管 · 49C 张 · 49J 黄 · 49K 汪 · 49L 蔡"]]},
  {no:"MU2075 · 国际段",al:"中国东方航空 · 2/4 周四",
   a:{code:"PKX",apt:"北京大兴",time:"11:55",dt:"2/4 周四 · UTC+8"},
   b:{code:"SVO",apt:"莫斯科谢列梅捷沃 C",time:"15:30",dt:"2/4 周四 · UTC+3"},dur:"8h35m",
-  kv:[["座位","39A 安康 · 38A 贝宁 · 38C 娅妮 · 39C 泓皓 · 40A 茜 · 40C 荣"],["中转","大兴 2 小时 20 分，联程票行李直挂莫斯科"]],
+  kv:[["座位","39A 高 · 38A 张 · 38C 黄 · 39C 管 · 40A 蔡 · 40C 汪"],["中转","大兴 2 小时 20 分，联程票行李直挂莫斯科"]],
   flag:["ok","联程票、托运直达，不用在大兴重新办托运"]},
  {no:"境内段 · 待出票",al:"2/7 周日",
   a:{code:"SVO",apt:"莫斯科谢列梅捷沃",time:"09:25",dt:"2/7 周日 · UTC+3"},
@@ -379,7 +418,7 @@ var FLIGHTS=[
  {no:"MU260 · 返程",al:"中国东方航空 · 2/12 周五",
   a:{code:"LED",apt:"圣彼得堡普尔科夫 T1",time:"21:05",dt:"2/12 周五 · UTC+3"},
   b:{code:"PVG",apt:"上海浦东 T1",time:"11:50",dt:"2/13 周六 · UTC+8"},dur:"9h45m",
-  kv:[["座位","47A 贝宁 · 47C 娅妮 · 47D 泓皓 · 47H 安康 · 47J 荣 · 47L 茜"]],
+  kv:[["座位","47A 张 · 47C 黄 · 47D 管 · 47H 高 · 47J 汪 · 47L 蔡"]],
   flag:["","国际航班建议提前 3 小时到机场，18:00 前进 T1"]}
 ];
 document.getElementById("flights").innerHTML=FLIGHTS.map(function(f){
