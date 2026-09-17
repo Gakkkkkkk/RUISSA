@@ -271,10 +271,17 @@ var PL={
  sami:[33.2000,68.9000],teriberka:[35.1458,69.1653],
  hermitage:[30.3146,59.9398],palacesq:[30.3132,59.9386],isaac:[30.3060,59.9341],
  blood:[30.3287,59.9400],kazan:[30.3250,59.9341],nevsky:[30.3250,59.9350],
- peterpaul:[30.3170,59.9500],aurora:[30.3351,59.9550],mariinsky:[30.2956,59.9255]
+ peterpaul:[30.3170,59.9500],aurora:[30.3351,59.9550],mariinsky:[30.2956,59.9255],
+ arbatstars:"Москва, Новый Арбат, 32"
 };
-var mapUrl=function(ll){return "https://yandex.ru/maps/?pt="+ll[0]+","+ll[1]+"&z=17&l=map";};
-var routeUrl=function(l){return l.length?"https://yandex.ru/maps/?rtext="+l.map(function(p){return p[1]+","+p[0];}).join("~")+"&rtt=auto":"#";};
+var isArr=function(v){return Object.prototype.toString.call(v)==="[object Array]";};
+var mapUrl=function(v){return typeof v==="string"
+  ? "https://yandex.ru/maps/?text="+encodeURIComponent(v)
+  : "https://yandex.ru/maps/?pt="+v[0]+","+v[1]+"&z=17&l=map";};
+var routeUrl=function(l){
+  var a=l.filter(isArr);
+  return a.length?"https://yandex.ru/maps/?rtext="+a.map(function(p){return p[1]+","+p[0];}).join("~")+"&rtt=auto":"#";
+};
 var A=function(t,ll){return ll?'<a href="'+mapUrl(ll)+'" target="_blank" rel="noopener">'+t+"</a>":t;};
 
 var C=["#1E6FB8","#C8102E","#6A4FB0","#1F8A72","#B8860B","#3E8BB8","#9A5A9E","#4F8A4A","#8A5A00"];
@@ -333,7 +340,7 @@ renderNow();tick();setInterval(tick,1000);
 (function(){
   var CITIES=[
    {n:"莫斯科",s:"2/4 – 2/7 · 3 晚",
-    pts:[["谢列梅捷沃机场","svo"],["克里姆林宫","kremlin"],["红场 · 古姆","redsq"],["基督救世主","coj"],
+    pts:[["谢列梅捷沃机场","svo"],["阿尔巴特之星","arbatstars"],["克里姆林宫","kremlin"],["红场 · 古姆","redsq"],["基督救世主","coj"],
          ["特列季亚科夫","tretyakov"],["老阿尔巴特","arbat"],["VDNKh","vdnh"],["库宾卡 · 武装力量主教座堂","kubinka"]]},
    {n:"摩尔曼斯克",s:"2/7 – 2/10 · 3 晚",
     pts:[["摩尔曼斯克机场","mmk"],["湖畔木屋","murhouse"],["市区军事体验 · 打枪",null],["列宁号破冰船","lenin"],
@@ -393,8 +400,13 @@ var STAYS=[
       ["编号","尾号 5434（完整编号见订房 App）"]],
   link:PL.murhouse,linkTxt:"打开地图",
   flag:["","私宅不是酒店，需确认房东是否代办落地登记"]},
- {n:"莫斯科 · 3 晚（2/4 – 2/7）",m:"待订 · 6 人",chip:["g2","待订"],
-  kv:[["建议","市中心环线内、靠近地铁"],["状态","未订，订完发截图补进本页"]]},
+ {n:"阿尔巴特之星酒店公寓",m:"Arbat Stars Hotel and Apartments（原 Marriott Novy Arbat）",chip:["","已订"],
+  kv:[["地址","阿尔巴特区 New Arbat Ave, 32"],["入住","2/4 15:00 之后"],
+      ["退房","2/7 12:00 之前 · 共 3 晚"],
+      ["房型","豪华双床房 ×3 间 · 2 张 1.2 米小双人床 + 2 张 0.9 米单人床 · 28㎡ · 含行李寄存"],
+      ["餐食","全程无餐食；单加早餐 4000 卢布/人"]],
+  link:PL.arbatstars,linkTxt:"打开地图",
+  flag:["","早餐 4000 卢布/人偏贵，隔壁咖啡馆或便利店划算得多。3 间房住 6 人，加床或床位分配最好提前跟酒店打个招呼；2/7 早上 06:30 就要出发去机场，退房时间记得提前跟前台说"]},
  {n:"圣彼得堡 · 2 晚（2/10 – 2/12）",m:"待订 · 6 人",chip:["g2","待订"],
   kv:[["建议","涅瓦大街 / 冬宫一带"],["状态","未订，订完发截图补进本页"]]}
 ];
@@ -416,7 +428,8 @@ var DAYS=[
   {t:"11:55",off:CN,h:"MU2075 起飞",p:"北京大兴 11:55 → 莫斯科 15:30，飞行 8 小时 35 分",k:"pkx",key:1},
   {t:"15:30",off:RU,h:"抵达莫斯科谢列梅捷沃 C",p:"出关加取行李约 1–1.5 小时",k:"svo",key:1},
   {t:"17:30",off:RU,h:"前往市区",p:"Aeroexpress 到白俄罗斯站约 35 分钟，打车 40–70 分钟",k:"svo"},
-  {t:"19:00",off:RU,h:"红场夜景 · 圣瓦西里外观 · 古姆百货",p:"第一天不排室内景点，就在红场一圈走走吃顿饭",k:"redsq"}
+  {t:"18:30",off:RU,h:"入住阿尔巴特之星酒店公寓",p:"New Arbat Ave, 32 · 从酒店步行到红场约 15 分钟",k:"arbatstars"},
+  {t:"19:30",off:RU,h:"红场夜景 · 圣瓦西里外观 · 古姆百货",p:"第一天不排室内景点，就在红场一圈走走吃顿饭",k:"redsq"}
  ]},
 {d:2,dt:"02 / 05",wd:"周五 · 除夕",city:"莫斯科历史建筑核心日",night:"莫斯科",
  items:[
@@ -497,7 +510,11 @@ var DAYS=[
 document.getElementById("days").innerHTML=DAYS.map(function(day,i){
   var col=C[i];
   var keys=[],seen={};
-  day.items.forEach(function(it){if(it.k&&PL[it.k]){var kk=PL[it.k].join(",");if(!seen[kk]){seen[kk]=1;keys.push(it);}}});
+  day.items.forEach(function(it){
+    if(!it.k||!PL[it.k])return;
+    var v=PL[it.k],kk=typeof v==="string"?v:v.join(",");
+    if(!seen[kk]){seen[kk]=1;keys.push(it);}
+  });
   var chips=keys.map(function(it,idx){return '<a class="chipnav" href="'+mapUrl(PL[it.k])+'" target="_blank" rel="noopener"><span class="no">'+(idx+1)+"</span>"+it.h.replace(/（.*?）/g,"")+"</a>";}).join("");
   var pts=keys.map(function(it){return PL[it.k];});
   var body=day.items.map(function(it){
@@ -523,7 +540,6 @@ document.getElementById("days").innerHTML=DAYS.map(function(day,i){
 
 /* todos */
 var TODOS=[
- ["hot","订莫斯科酒店 3 晚（2/4 – 2/7，6 人，市中心环线内）"],
  ["hot","订圣彼得堡酒店 2 晚（2/10 – 2/12，6 人，涅瓦大街一带）"],
  ["hot","订 2/6 下午包车：6 人商务车，13:00 出发往返库宾卡，含往返约 4 小时车程"],
  ["hot","核对并出票：莫斯科 → 摩尔曼斯克 09:25–12:15（2/7），约 1080 元/人含 23kg 行李"],
